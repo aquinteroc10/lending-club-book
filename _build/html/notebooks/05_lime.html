@@ -66,7 +66,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Reflexión Crítica" href="06_reflexion.html" />
-    <link rel="prev" title="EDA" href="01_eda.html" />
+    <link rel="prev" title="Evaluación de métricas" href="04_evaluacion.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -171,6 +171,11 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="01_eda.html">EDA</a></li>
 
 
+<li class="toctree-l1"><a class="reference internal" href="02_preprocesamiento.html">Preprocesamiento con scikit-learn</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="03_modelado.html">Modelado - scikit-learn</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="04_evaluacion.html">4 · Evaluación de Métricas</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">5 · Interpretabilidad (LIME)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="06_reflexion.html">6 · Reflexión Crítica</a></li>
 </ul>
@@ -342,12 +347,7 @@ document.write(`
 <h1>Interpretabilidad con LIME<a class="headerlink" href="#interpretabilidad-con-lime" title="Permalink to this heading">#</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># ============================================================</span>
-<span class="c1"># 9.10.4.5  INTERPRETABILIDAD CON LIME</span>
-<span class="c1"># ============================================================</span>
-<span class="c1"># pip install lime</span>
-
-<span class="kn">import</span><span class="w"> </span><span class="nn">lime</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">lime</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">lime.lime_tabular</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
@@ -428,6 +428,25 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Total mal clasificadas: 53609
+
+══════════════════════════════════════════════
+  LIME — Falso Positivo (real=0, pred=1)
+══════════════════════════════════════════════
+  Probabilidades : [0.4955473 0.5044527]
+</pre></div>
+</div>
+<img alt="../_images/e0759401945fd0786e531bc75fe164b93936e4fb5b873775e478a2b8c9189aa3.png" src="../_images/e0759401945fd0786e531bc75fe164b93936e4fb5b873775e478a2b8c9189aa3.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>══════════════════════════════════════════════
+  LIME — Falso Negativo (real=1, pred=0)
+══════════════════════════════════════════════
+  Probabilidades : [0.81283636 0.18716364]
+</pre></div>
+</div>
+<img alt="../_images/4fe6537dbd82c9a472da6618c52b699c8c2e7875340c8005f8ef8d277f0da859.png" src="../_images/4fe6537dbd82c9a472da6618c52b699c8c2e7875340c8005f8ef8d277f0da859.png" />
+<img alt="../_images/b3c0e019744b5c263f75f767b31a402598958f355928b6d498f5221fbbde0226.png" src="../_images/b3c0e019744b5c263f75f767b31a402598958f355928b6d498f5221fbbde0226.png" />
+</div>
 </div>
 </section>
 
@@ -462,12 +481,12 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="01_eda.html"
+       href="04_evaluacion.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">EDA</p>
+        <p class="prev-next-title">Evaluación de métricas</p>
       </div>
     </a>
     <a class="right-next"
