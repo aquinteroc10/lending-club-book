@@ -1,0 +1,22 @@
+title: "Tarea 9.10 - Lending Club Dataset"
+author: "Mateo Meléndez y Andrea Quintero"
+logo: ""                        
+execute:
+  execute_notebooks: "off"      
+  timeout: 300
+parse:
+  myst_enable_extensions:
+    - colon_fence
+    - dollarmath
+    - html_image
+html:
+  use_issues_button: false
+  use_repository_button: true
+  home_page_in_navbar: true
+repository:
+  url: https://github.com/aquinteroc10/lending-club-book
+  branch: main
+  path_to_book: .
+sphinx:
+  extra_extensions:
+    - sphinx_copybutton

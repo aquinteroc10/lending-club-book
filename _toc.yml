@@ -1,0 +1,15 @@
+format: jb-book
+root: intro
+chapters:
+  - file: notebooks/01_eda
+    title: "1 · Análisis Exploratorio"
+  - file: notebooks/02_preprocessing
+    title: "2 · Preprocesamiento"
+  - file: notebooks/03_modeling
+    title: "3 · Modelado y Tuning"
+  - file: notebooks/04_evaluation
+    title: "4 · Evaluación de Métricas"
+  - file: notebooks/05_lime
+    title: "5 · Interpretabilidad (LIME)"
+  - file: notebooks/06_reflexion
+    title: "6 · Reflexión Crítica"
