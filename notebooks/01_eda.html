@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>EDA &#8212; Tarea 9.10 - Lending Club Dataset</title>
+    <title>1. EDA &#8212; Tarea 9.10 - Lending Club Dataset</title>
   
   
   
@@ -65,7 +65,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/01_eda';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Preprocesamiento con scikit-learn" href="02_preprocesamiento.html" />
+    <link rel="next" title="4. Preprocesamiento con scikit-learn" href="02_preprocesamiento.html" />
     <link rel="prev" title="LendingClub — Modelo de Clasificación Supervisada" href="../intro.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -168,16 +168,16 @@ const thebe_selector_output = ".output, .cell_output"
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">EDA</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">1. EDA</a></li>
 
 
-<li class="toctree-l1"><a class="reference internal" href="02_preprocesamiento.html">Preprocesamiento con scikit-learn</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_preprocesamiento.html">4. Preprocesamiento con scikit-learn</a></li>
 
-<li class="toctree-l1"><a class="reference internal" href="03_modelado.html">Modelado - scikit-learn</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_modelado.html">6. Modelado - scikit-learn</a></li>
 
-<li class="toctree-l1"><a class="reference internal" href="04_evaluacion.html">4 · Evaluación de Métricas</a></li>
-<li class="toctree-l1"><a class="reference internal" href="05_lime.html">5 · Interpretabilidad (LIME)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="06_reflexion.html">6 · Reflexión Crítica</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_evaluacion.html">8. Evaluación de Métricas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_lime.html">9. Interpretabilidad (LIME)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_reflexion.html">10. Reflexión Crítica</a></li>
 </ul>
 
     </div>
@@ -341,19 +341,19 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">EDA</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-unidimensional">Análisis unidimensional</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-numericas">Variables numéricas</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-categoricas">Variables categóricas</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-objetivo">Variable objetivo</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">1. EDA</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-unidimensional">2. Análisis unidimensional</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-numericas">2.1. Variables numéricas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-categoricas">2.2. Variables categóricas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-objetivo">2.3. Variable objetivo</a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-bidimensional">Análisis bidimensional</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#relacion-numerica-default">Relación numérica ↔ default</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#relacion-categorica-default">Relación categórica ↔ default</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multicolinealidad">Multicolinealidad</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kde">KDE</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#valores-faltantes">Valores faltantes</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-bidimensional">3. Análisis bidimensional</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#relacion-numerica-default">3.1. Relación numérica ↔ default</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#relacion-categorica-default">3.2. Relación categórica ↔ default</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multicolinealidad">3.3. Multicolinealidad</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kde">3.4. KDE</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#valores-faltantes">3.5. Valores faltantes</a></li>
 </ul>
 </li>
 </ul>
@@ -369,7 +369,7 @@ document.write(`
                 <article class="bd-article">
                   
   <section id="eda">
-<h1>EDA<a class="headerlink" href="#eda" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">1. </span>EDA<a class="headerlink" href="#eda" title="Permalink to this heading">#</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>import os
@@ -1071,9 +1071,9 @@ Distribución del target (default):
 </div>
 </section>
 <section id="analisis-unidimensional">
-<h1>Análisis unidimensional<a class="headerlink" href="#analisis-unidimensional" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">2. </span>Análisis unidimensional<a class="headerlink" href="#analisis-unidimensional" title="Permalink to this heading">#</a></h1>
 <section id="variables-numericas">
-<h2>Variables numéricas<a class="headerlink" href="#variables-numericas" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">2.1. </span>Variables numéricas<a class="headerlink" href="#variables-numericas" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
@@ -1356,7 +1356,7 @@ emp_length                -0.1266                    Normal
 </div>
 </section>
 <section id="variables-categoricas">
-<h2>Variables categóricas<a class="headerlink" href="#variables-categoricas" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">2.2. </span>Variables categóricas<a class="headerlink" href="#variables-categoricas" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#Frecuencia absoluta y relativa</span>
@@ -1995,7 +1995,7 @@ verification_status       | Nulos:      33 |   0.0% | Sin nulos
 </div>
 </section>
 <section id="variable-objetivo">
-<h2>Variable objetivo<a class="headerlink" href="#variable-objetivo" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">2.3. </span>Variable objetivo<a class="headerlink" href="#variable-objetivo" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#Calcular la distribución de clases (0 = Fully Paid, 1 = Charged Off) en valores absolutos y porcentajes.</span>
@@ -2072,9 +2072,9 @@ Charged Off     1   268559           19.96
 </section>
 </section>
 <section id="analisis-bidimensional">
-<h1>Análisis bidimensional<a class="headerlink" href="#analisis-bidimensional" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">3. </span>Análisis bidimensional<a class="headerlink" href="#analisis-bidimensional" title="Permalink to this heading">#</a></h1>
 <section id="relacion-numerica-default">
-<h2>Relación numérica ↔ default<a class="headerlink" href="#relacion-numerica-default" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">3.1. </span>Relación numérica ↔ default<a class="headerlink" href="#relacion-numerica-default" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#Calcular la diferencia de medias entre clases y realizar una prueba t de Student o prueba de Mann-Whitney</span>
@@ -2174,7 +2174,7 @@ emp_length                 6.08       5.95      -0.13     1.98e-62 Muy alta  -0.
 </div>
 </section>
 <section id="relacion-categorica-default">
-<h2>Relación categórica ↔ default<a class="headerlink" href="#relacion-categorica-default" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">3.2. </span>Relación categórica ↔ default<a class="headerlink" href="#relacion-categorica-default" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">chi2_contingency</span>
@@ -2382,7 +2382,7 @@ Not Verified                 346166            59535  405701             14.67
 </div>
 </section>
 <section id="multicolinealidad">
-<h2>Multicolinealidad<a class="headerlink" href="#multicolinealidad" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">3.3. </span>Multicolinealidad<a class="headerlink" href="#multicolinealidad" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
@@ -2493,7 +2493,7 @@ verification_status   0.0618          0.0288      0.0214               1.0000
 </div>
 </section>
 <section id="kde">
-<h2>KDE<a class="headerlink" href="#kde" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">3.4. </span>KDE<a class="headerlink" href="#kde" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#GRÁFICOS DE DENSIDAD (KDE)</span>
@@ -2554,7 +2554,7 @@ verification_status   0.0618          0.0288      0.0214               1.0000
 </div>
 </section>
 <section id="valores-faltantes">
-<h2>Valores faltantes<a class="headerlink" href="#valores-faltantes" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">3.5. </span>Valores faltantes<a class="headerlink" href="#valores-faltantes" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">missingno</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">msno</span>
@@ -2711,7 +2711,7 @@ verification_status                   —                —          —  Sin n
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Preprocesamiento con scikit-learn</p>
+        <p class="prev-next-title"><span class="section-number">4. </span>Preprocesamiento con scikit-learn</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -2731,19 +2731,19 @@ verification_status                   —                —          —  Sin n
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">EDA</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-unidimensional">Análisis unidimensional</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-numericas">Variables numéricas</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-categoricas">Variables categóricas</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-objetivo">Variable objetivo</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">1. EDA</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-unidimensional">2. Análisis unidimensional</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-numericas">2.1. Variables numéricas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-categoricas">2.2. Variables categóricas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-objetivo">2.3. Variable objetivo</a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-bidimensional">Análisis bidimensional</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#relacion-numerica-default">Relación numérica ↔ default</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#relacion-categorica-default">Relación categórica ↔ default</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multicolinealidad">Multicolinealidad</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kde">KDE</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#valores-faltantes">Valores faltantes</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-bidimensional">3. Análisis bidimensional</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#relacion-numerica-default">3.1. Relación numérica ↔ default</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#relacion-categorica-default">3.2. Relación categórica ↔ default</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multicolinealidad">3.3. Multicolinealidad</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kde">3.4. KDE</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#valores-faltantes">3.5. Valores faltantes</a></li>
 </ul>
 </li>
 </ul>
