@@ -173,7 +173,8 @@ const thebe_selector_output = ".output, .cell_output"
 
 <li class="toctree-l1"><a class="reference internal" href="02_preprocesamiento.html">Preprocesamiento con scikit-learn</a></li>
 
-<li class="toctree-l1"><a class="reference internal" href="03_modelado.html">3 · Modelado y Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_modelado.html">Modelado - scikit-learn</a></li>
+
 <li class="toctree-l1"><a class="reference internal" href="04_evaluacion.html">4 · Evaluación de Métricas</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05_lime.html">5 · Interpretabilidad (LIME)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="06_reflexion.html">6 · Reflexión Crítica</a></li>
@@ -371,6 +372,36 @@ document.write(`
 <h1>EDA<a class="headerlink" href="#eda" title="Permalink to this heading">#</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>import os
+# Token de kaggle
+os.environ[&#39;KAGGLE_API_TOKEN&#39;] = &#39;KGAT_50cfd9f4e502c15625d7bd91dd537fbd&#39;
+
+!pip install kaggle -q
+
+# Listar archivos del dataset
+!kaggle datasets files wordsforthewise/lending-club
+
+# Descargar dataset completo
+!kaggle datasets download wordsforthewise/lending-club \
+-p data/lending_club --unzip -q
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>name                                                           size  creationDate                
+-------------------------------------------------------  ----------  --------------------------  
+accepted_2007_to_2018Q4.csv.gz                            392582231  2019-12-17 23:30:10.124000  
+accepted_2007_to_2018q4.csv/accepted_2007_to_2018Q4.csv  1675133810  2019-04-10 18:09:09.272000  
+rejected_2007_to_2018Q4.csv.gz                            255470782  2019-12-17 23:30:04.004000  
+rejected_2007_to_2018q4.csv/rejected_2007_to_2018Q4.csv  1782281620  2019-04-10 18:09:22.367000  
+Dataset URL: https://www.kaggle.com/datasets/wordsforthewise/lending-club
+License(s): CC0-1.0
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
@@ -397,6 +428,12 @@ document.write(`
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Filas:    </span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Columnas: </span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Filas:    2,260,701
+  Columnas: 24
 </pre></div>
 </div>
 </div>
@@ -430,6 +467,607 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== PRIMERAS 5 FILAS ===
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>loan_amnt</th>
+      <th>funded_amnt</th>
+      <th>term</th>
+      <th>int_rate</th>
+      <th>installment</th>
+      <th>grade</th>
+      <th>sub_grade</th>
+      <th>emp_length</th>
+      <th>home_ownership</th>
+      <th>annual_inc</th>
+      <th>...</th>
+      <th>addr_state</th>
+      <th>dti</th>
+      <th>fico_range_high</th>
+      <th>open_acc</th>
+      <th>pub_rec</th>
+      <th>revol_bal</th>
+      <th>revol_util</th>
+      <th>total_acc</th>
+      <th>mort_acc</th>
+      <th>pub_rec_bankruptcies</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>3600.0</td>
+      <td>3600.0</td>
+      <td>36 months</td>
+      <td>13.99</td>
+      <td>123.03</td>
+      <td>C</td>
+      <td>C4</td>
+      <td>10+ years</td>
+      <td>MORTGAGE</td>
+      <td>55000.0</td>
+      <td>...</td>
+      <td>PA</td>
+      <td>5.91</td>
+      <td>679.0</td>
+      <td>7.0</td>
+      <td>0.0</td>
+      <td>2765.0</td>
+      <td>29.7</td>
+      <td>13.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>24700.0</td>
+      <td>24700.0</td>
+      <td>36 months</td>
+      <td>11.99</td>
+      <td>820.28</td>
+      <td>C</td>
+      <td>C1</td>
+      <td>10+ years</td>
+      <td>MORTGAGE</td>
+      <td>65000.0</td>
+      <td>...</td>
+      <td>SD</td>
+      <td>16.06</td>
+      <td>719.0</td>
+      <td>22.0</td>
+      <td>0.0</td>
+      <td>21470.0</td>
+      <td>19.2</td>
+      <td>38.0</td>
+      <td>4.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>20000.0</td>
+      <td>20000.0</td>
+      <td>60 months</td>
+      <td>10.78</td>
+      <td>432.66</td>
+      <td>B</td>
+      <td>B4</td>
+      <td>10+ years</td>
+      <td>MORTGAGE</td>
+      <td>63000.0</td>
+      <td>...</td>
+      <td>IL</td>
+      <td>10.78</td>
+      <td>699.0</td>
+      <td>6.0</td>
+      <td>0.0</td>
+      <td>7869.0</td>
+      <td>56.2</td>
+      <td>18.0</td>
+      <td>5.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>35000.0</td>
+      <td>35000.0</td>
+      <td>60 months</td>
+      <td>14.85</td>
+      <td>829.90</td>
+      <td>C</td>
+      <td>C5</td>
+      <td>10+ years</td>
+      <td>MORTGAGE</td>
+      <td>110000.0</td>
+      <td>...</td>
+      <td>NJ</td>
+      <td>17.06</td>
+      <td>789.0</td>
+      <td>13.0</td>
+      <td>0.0</td>
+      <td>7802.0</td>
+      <td>11.6</td>
+      <td>17.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>10400.0</td>
+      <td>10400.0</td>
+      <td>60 months</td>
+      <td>22.45</td>
+      <td>289.91</td>
+      <td>F</td>
+      <td>F1</td>
+      <td>3 years</td>
+      <td>MORTGAGE</td>
+      <td>104433.0</td>
+      <td>...</td>
+      <td>PA</td>
+      <td>25.37</td>
+      <td>699.0</td>
+      <td>12.0</td>
+      <td>0.0</td>
+      <td>21929.0</td>
+      <td>64.5</td>
+      <td>35.0</td>
+      <td>6.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 24 columns</p>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== ÚLTIMAS 5 FILAS ===
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>loan_amnt</th>
+      <th>funded_amnt</th>
+      <th>term</th>
+      <th>int_rate</th>
+      <th>installment</th>
+      <th>grade</th>
+      <th>sub_grade</th>
+      <th>emp_length</th>
+      <th>home_ownership</th>
+      <th>annual_inc</th>
+      <th>...</th>
+      <th>addr_state</th>
+      <th>dti</th>
+      <th>fico_range_high</th>
+      <th>open_acc</th>
+      <th>pub_rec</th>
+      <th>revol_bal</th>
+      <th>revol_util</th>
+      <th>total_acc</th>
+      <th>mort_acc</th>
+      <th>pub_rec_bankruptcies</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2260696</th>
+      <td>40000.0</td>
+      <td>40000.0</td>
+      <td>60 months</td>
+      <td>10.49</td>
+      <td>859.56</td>
+      <td>B</td>
+      <td>B3</td>
+      <td>9 years</td>
+      <td>MORTGAGE</td>
+      <td>227000.0</td>
+      <td>...</td>
+      <td>CA</td>
+      <td>12.75</td>
+      <td>709.0</td>
+      <td>5.0</td>
+      <td>0.0</td>
+      <td>8633.0</td>
+      <td>64.9</td>
+      <td>37.0</td>
+      <td>3.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2260697</th>
+      <td>24000.0</td>
+      <td>24000.0</td>
+      <td>60 months</td>
+      <td>14.49</td>
+      <td>564.56</td>
+      <td>C</td>
+      <td>C4</td>
+      <td>6 years</td>
+      <td>RENT</td>
+      <td>110000.0</td>
+      <td>...</td>
+      <td>FL</td>
+      <td>18.30</td>
+      <td>664.0</td>
+      <td>10.0</td>
+      <td>1.0</td>
+      <td>17641.0</td>
+      <td>68.1</td>
+      <td>31.0</td>
+      <td>2.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2260698</th>
+      <td>14000.0</td>
+      <td>14000.0</td>
+      <td>60 months</td>
+      <td>14.49</td>
+      <td>329.33</td>
+      <td>C</td>
+      <td>C4</td>
+      <td>10+ years</td>
+      <td>MORTGAGE</td>
+      <td>95000.0</td>
+      <td>...</td>
+      <td>TX</td>
+      <td>23.36</td>
+      <td>664.0</td>
+      <td>8.0</td>
+      <td>0.0</td>
+      <td>7662.0</td>
+      <td>54.0</td>
+      <td>22.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2260699</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2260700</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 24 columns</p>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 2260701 entries, 0 to 2260700
+Data columns (total 24 columns):
+ #   Column                Non-Null Count    Dtype  
+---  ------                --------------    -----  
+ 0   loan_amnt             2260668 non-null  float64
+ 1   funded_amnt           2260668 non-null  float64
+ 2   term                  2260668 non-null  object 
+ 3   int_rate              2260668 non-null  float64
+ 4   installment           2260668 non-null  float64
+ 5   grade                 2260668 non-null  object 
+ 6   sub_grade             2260668 non-null  object 
+ 7   emp_length            2113761 non-null  object 
+ 8   home_ownership        2260668 non-null  object 
+ 9   annual_inc            2260664 non-null  float64
+ 10  verification_status   2260668 non-null  object 
+ 11  issue_d               2260668 non-null  object 
+ 12  loan_status           2260668 non-null  object 
+ 13  purpose               2260668 non-null  object 
+ 14  addr_state            2260668 non-null  object 
+ 15  dti                   2258957 non-null  float64
+ 16  fico_range_high       2260668 non-null  float64
+ 17  open_acc              2260639 non-null  float64
+ 18  pub_rec               2260639 non-null  float64
+ 19  revol_bal             2260668 non-null  float64
+ 20  revol_util            2258866 non-null  float64
+ 21  total_acc             2260639 non-null  float64
+ 22  mort_acc              2210638 non-null  float64
+ 23  pub_rec_bankruptcies  2259303 non-null  float64
+dtypes: float64(14), object(10)
+memory usage: 413.9+ MB
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>loan_amnt</th>
+      <th>funded_amnt</th>
+      <th>int_rate</th>
+      <th>installment</th>
+      <th>annual_inc</th>
+      <th>dti</th>
+      <th>fico_range_high</th>
+      <th>open_acc</th>
+      <th>pub_rec</th>
+      <th>revol_bal</th>
+      <th>revol_util</th>
+      <th>total_acc</th>
+      <th>mort_acc</th>
+      <th>pub_rec_bankruptcies</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>2.260668e+06</td>
+      <td>2.260668e+06</td>
+      <td>2.260668e+06</td>
+      <td>2.260668e+06</td>
+      <td>2.260664e+06</td>
+      <td>2.258957e+06</td>
+      <td>2.260668e+06</td>
+      <td>2.260639e+06</td>
+      <td>2.260639e+06</td>
+      <td>2.260668e+06</td>
+      <td>2.258866e+06</td>
+      <td>2.260639e+06</td>
+      <td>2.210638e+06</td>
+      <td>2.259303e+06</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>1.504693e+04</td>
+      <td>1.504166e+04</td>
+      <td>1.309283e+01</td>
+      <td>4.458068e+02</td>
+      <td>7.799243e+04</td>
+      <td>1.882420e+01</td>
+      <td>7.025884e+02</td>
+      <td>1.161240e+01</td>
+      <td>1.975278e-01</td>
+      <td>1.665846e+04</td>
+      <td>5.033770e+01</td>
+      <td>2.416255e+01</td>
+      <td>1.555382e+00</td>
+      <td>1.281935e-01</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>9.190245e+03</td>
+      <td>9.188413e+03</td>
+      <td>4.832138e+00</td>
+      <td>2.671735e+02</td>
+      <td>1.126962e+05</td>
+      <td>1.418333e+01</td>
+      <td>3.301124e+01</td>
+      <td>5.640861e+00</td>
+      <td>5.705150e-01</td>
+      <td>2.294831e+04</td>
+      <td>2.471307e+01</td>
+      <td>1.198753e+01</td>
+      <td>1.904981e+00</td>
+      <td>3.646130e-01</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>5.000000e+02</td>
+      <td>5.000000e+02</td>
+      <td>5.310000e+00</td>
+      <td>4.930000e+00</td>
+      <td>0.000000e+00</td>
+      <td>-1.000000e+00</td>
+      <td>6.140000e+02</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>1.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>8.000000e+03</td>
+      <td>8.000000e+03</td>
+      <td>9.490000e+00</td>
+      <td>2.516500e+02</td>
+      <td>4.600000e+04</td>
+      <td>1.189000e+01</td>
+      <td>6.790000e+02</td>
+      <td>8.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>5.950000e+03</td>
+      <td>3.150000e+01</td>
+      <td>1.500000e+01</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>1.290000e+04</td>
+      <td>1.287500e+04</td>
+      <td>1.262000e+01</td>
+      <td>3.779900e+02</td>
+      <td>6.500000e+04</td>
+      <td>1.784000e+01</td>
+      <td>6.940000e+02</td>
+      <td>1.100000e+01</td>
+      <td>0.000000e+00</td>
+      <td>1.132400e+04</td>
+      <td>5.030000e+01</td>
+      <td>2.200000e+01</td>
+      <td>1.000000e+00</td>
+      <td>0.000000e+00</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>2.000000e+04</td>
+      <td>2.000000e+04</td>
+      <td>1.599000e+01</td>
+      <td>5.933200e+02</td>
+      <td>9.300000e+04</td>
+      <td>2.449000e+01</td>
+      <td>7.190000e+02</td>
+      <td>1.400000e+01</td>
+      <td>0.000000e+00</td>
+      <td>2.024600e+04</td>
+      <td>6.940000e+01</td>
+      <td>3.100000e+01</td>
+      <td>3.000000e+00</td>
+      <td>0.000000e+00</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>4.000000e+04</td>
+      <td>4.000000e+04</td>
+      <td>3.099000e+01</td>
+      <td>1.719830e+03</td>
+      <td>1.100000e+08</td>
+      <td>9.990000e+02</td>
+      <td>8.500000e+02</td>
+      <td>1.010000e+02</td>
+      <td>8.600000e+01</td>
+      <td>2.904836e+06</td>
+      <td>8.923000e+02</td>
+      <td>1.760000e+02</td>
+      <td>9.400000e+01</td>
+      <td>1.200000e+01</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dimensión del dataset: 2,260,701 filas x 24 columnas
+Valores únicos de loan_status:
+loan_status
+Fully Paid                                             1076751
+Current                                                 878317
+Charged Off                                             268559
+Late (31-120 days)                                       21467
+In Grace Period                                           8436
+Late (16-30 days)                                         4349
+Does not meet the credit policy. Status:Fully Paid        1988
+Does not meet the credit policy. Status:Charged Off        761
+Default                                                     40
+Name: count, dtype: int64
+
+Distribución del target (default):
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Conteo</th>
+      <th>Porcentaje %</th>
+    </tr>
+    <tr>
+      <th>default</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1992142</td>
+      <td>88.12</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>268559</td>
+      <td>11.88</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 </section>
 <section id="analisis-unidimensional">
@@ -535,6 +1173,186 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>loan_amnt</th>
+      <th>int_rate</th>
+      <th>annual_inc</th>
+      <th>dti</th>
+      <th>fico_range_high</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>2.260668e+06</td>
+      <td>2.260668e+06</td>
+      <td>2.260664e+06</td>
+      <td>2.258957e+06</td>
+      <td>2.260668e+06</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>1.504693e+04</td>
+      <td>1.309283e+01</td>
+      <td>7.799243e+04</td>
+      <td>1.882420e+01</td>
+      <td>7.025884e+02</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>9.190245e+03</td>
+      <td>4.832138e+00</td>
+      <td>1.126962e+05</td>
+      <td>1.418333e+01</td>
+      <td>3.301124e+01</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>5.000000e+02</td>
+      <td>5.310000e+00</td>
+      <td>0.000000e+00</td>
+      <td>-1.000000e+00</td>
+      <td>6.140000e+02</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>8.000000e+03</td>
+      <td>9.490000e+00</td>
+      <td>4.600000e+04</td>
+      <td>1.189000e+01</td>
+      <td>6.790000e+02</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>1.290000e+04</td>
+      <td>1.262000e+01</td>
+      <td>6.500000e+04</td>
+      <td>1.784000e+01</td>
+      <td>6.940000e+02</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>2.000000e+04</td>
+      <td>1.599000e+01</td>
+      <td>9.300000e+04</td>
+      <td>2.449000e+01</td>
+      <td>7.190000e+02</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>4.000000e+04</td>
+      <td>3.099000e+01</td>
+      <td>1.100000e+08</td>
+      <td>9.990000e+02</td>
+      <td>8.500000e+02</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OUTLIERS POR MÉTODO IQR 
+
+loan_amnt            | Límite inf:    -10000.00 | Límite sup:     38000.00 | Outliers:  35,215 (1.56%)
+int_rate             | Límite inf:        -0.26 | Límite sup:        25.74 | Outliers:  41,099 (1.82%)
+annual_inc           | Límite inf:    -24500.00 | Límite sup:    163500.00 | Outliers: 110,041 (4.87%)
+dti                  | Límite inf:        -7.01 | Límite sup:        43.39 | Outliers:  21,580 (0.96%)
+fico_range_high      | Límite inf:       619.00 | Límite sup:       779.00 | Outliers:  74,846 (3.31%)
+emp_length           | Límite inf:       -10.00 | Límite sup:        22.00 | Outliers:       0 (0.0%)
+</pre></div>
+</div>
+<img alt="../_images/f66238c4232039e42b11bd6a3e4d633d1fbe2f04e2c0cc71556f1546db9ca495.png" src="../_images/f66238c4232039e42b11bd6a3e4d633d1fbe2f04e2c0cc71556f1546db9ca495.png" />
+<img alt="../_images/0e0843b62a30398b216276550b6217bd216757d663bc0c7e13f0187c1374f424.png" src="../_images/0e0843b62a30398b216276550b6217bd216757d663bc0c7e13f0187c1374f424.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ASIMETRÍA
+
+Variable                Asimetría            Interpretación
+------------------------------------------------------------
+loan_amnt                  0.7778                  Moderada
+int_rate                   0.7681                  Moderada
+annual_inc               493.8861                      Alta
+dti                       29.2019                      Alta
+fico_range_high            1.1931                      Alta
+emp_length                -0.1266                    Normal
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Nulos</th>
+      <th>Porcentaje %</th>
+      <th>Tratamiento</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>loan_amnt</th>
+      <td>33</td>
+      <td>0.00</td>
+      <td>Sin nulos</td>
+    </tr>
+    <tr>
+      <th>int_rate</th>
+      <td>33</td>
+      <td>0.00</td>
+      <td>Sin nulos</td>
+    </tr>
+    <tr>
+      <th>annual_inc</th>
+      <td>37</td>
+      <td>0.00</td>
+      <td>Sin nulos</td>
+    </tr>
+    <tr>
+      <th>dti</th>
+      <td>1744</td>
+      <td>0.08</td>
+      <td>Imputar con mediana</td>
+    </tr>
+    <tr>
+      <th>fico_range_high</th>
+      <td>33</td>
+      <td>0.00</td>
+      <td>Sin nulos</td>
+    </tr>
+    <tr>
+      <th>emp_length</th>
+      <td>146940</td>
+      <td>6.50</td>
+      <td>Imputación avanzada</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 </section>
 <section id="variables-categoricas">
@@ -609,6 +1427,571 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======================================================
+  VARIABLE: PURPOSE
+=======================================================
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Frecuencia Absoluta</th>
+      <th>Frecuencia Relativa %</th>
+    </tr>
+    <tr>
+      <th>purpose</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>debt_consolidation</th>
+      <td>1277877</td>
+      <td>56.53</td>
+    </tr>
+    <tr>
+      <th>credit_card</th>
+      <td>516971</td>
+      <td>22.87</td>
+    </tr>
+    <tr>
+      <th>home_improvement</th>
+      <td>150457</td>
+      <td>6.66</td>
+    </tr>
+    <tr>
+      <th>other</th>
+      <td>139440</td>
+      <td>6.17</td>
+    </tr>
+    <tr>
+      <th>major_purchase</th>
+      <td>50445</td>
+      <td>2.23</td>
+    </tr>
+    <tr>
+      <th>medical</th>
+      <td>27488</td>
+      <td>1.22</td>
+    </tr>
+    <tr>
+      <th>small_business</th>
+      <td>24689</td>
+      <td>1.09</td>
+    </tr>
+    <tr>
+      <th>car</th>
+      <td>24013</td>
+      <td>1.06</td>
+    </tr>
+    <tr>
+      <th>vacation</th>
+      <td>15525</td>
+      <td>0.69</td>
+    </tr>
+    <tr>
+      <th>moving</th>
+      <td>15403</td>
+      <td>0.68</td>
+    </tr>
+    <tr>
+      <th>house</th>
+      <td>14136</td>
+      <td>0.63</td>
+    </tr>
+    <tr>
+      <th>wedding</th>
+      <td>2355</td>
+      <td>0.10</td>
+    </tr>
+    <tr>
+      <th>renewable_energy</th>
+      <td>1445</td>
+      <td>0.06</td>
+    </tr>
+    <tr>
+      <th>educational</th>
+      <td>424</td>
+      <td>0.02</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======================================================
+  VARIABLE: HOME_OWNERSHIP
+=======================================================
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Frecuencia Absoluta</th>
+      <th>Frecuencia Relativa %</th>
+    </tr>
+    <tr>
+      <th>home_ownership</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>MORTGAGE</th>
+      <td>1111450</td>
+      <td>49.16</td>
+    </tr>
+    <tr>
+      <th>RENT</th>
+      <td>894929</td>
+      <td>39.59</td>
+    </tr>
+    <tr>
+      <th>OWN</th>
+      <td>253057</td>
+      <td>11.19</td>
+    </tr>
+    <tr>
+      <th>ANY</th>
+      <td>996</td>
+      <td>0.04</td>
+    </tr>
+    <tr>
+      <th>OTHER</th>
+      <td>182</td>
+      <td>0.01</td>
+    </tr>
+    <tr>
+      <th>NONE</th>
+      <td>54</td>
+      <td>0.00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======================================================
+  VARIABLE: ADDR_STATE
+=======================================================
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Frecuencia Absoluta</th>
+      <th>Frecuencia Relativa %</th>
+    </tr>
+    <tr>
+      <th>addr_state</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>CA</th>
+      <td>314533</td>
+      <td>13.91</td>
+    </tr>
+    <tr>
+      <th>NY</th>
+      <td>186389</td>
+      <td>8.24</td>
+    </tr>
+    <tr>
+      <th>TX</th>
+      <td>186335</td>
+      <td>8.24</td>
+    </tr>
+    <tr>
+      <th>FL</th>
+      <td>161991</td>
+      <td>7.17</td>
+    </tr>
+    <tr>
+      <th>IL</th>
+      <td>91173</td>
+      <td>4.03</td>
+    </tr>
+    <tr>
+      <th>NJ</th>
+      <td>83132</td>
+      <td>3.68</td>
+    </tr>
+    <tr>
+      <th>PA</th>
+      <td>76939</td>
+      <td>3.40</td>
+    </tr>
+    <tr>
+      <th>OH</th>
+      <td>75132</td>
+      <td>3.32</td>
+    </tr>
+    <tr>
+      <th>GA</th>
+      <td>74196</td>
+      <td>3.28</td>
+    </tr>
+    <tr>
+      <th>VA</th>
+      <td>62954</td>
+      <td>2.78</td>
+    </tr>
+    <tr>
+      <th>NC</th>
+      <td>62730</td>
+      <td>2.77</td>
+    </tr>
+    <tr>
+      <th>MI</th>
+      <td>58770</td>
+      <td>2.60</td>
+    </tr>
+    <tr>
+      <th>MD</th>
+      <td>54008</td>
+      <td>2.39</td>
+    </tr>
+    <tr>
+      <th>AZ</th>
+      <td>53777</td>
+      <td>2.38</td>
+    </tr>
+    <tr>
+      <th>MA</th>
+      <td>51784</td>
+      <td>2.29</td>
+    </tr>
+    <tr>
+      <th>CO</th>
+      <td>48183</td>
+      <td>2.13</td>
+    </tr>
+    <tr>
+      <th>WA</th>
+      <td>47060</td>
+      <td>2.08</td>
+    </tr>
+    <tr>
+      <th>MN</th>
+      <td>39517</td>
+      <td>1.75</td>
+    </tr>
+    <tr>
+      <th>IN</th>
+      <td>37515</td>
+      <td>1.66</td>
+    </tr>
+    <tr>
+      <th>MO</th>
+      <td>36084</td>
+      <td>1.60</td>
+    </tr>
+    <tr>
+      <th>CT</th>
+      <td>35785</td>
+      <td>1.58</td>
+    </tr>
+    <tr>
+      <th>TN</th>
+      <td>35483</td>
+      <td>1.57</td>
+    </tr>
+    <tr>
+      <th>NV</th>
+      <td>32657</td>
+      <td>1.44</td>
+    </tr>
+    <tr>
+      <th>WI</th>
+      <td>29877</td>
+      <td>1.32</td>
+    </tr>
+    <tr>
+      <th>SC</th>
+      <td>28003</td>
+      <td>1.24</td>
+    </tr>
+    <tr>
+      <th>AL</th>
+      <td>27284</td>
+      <td>1.21</td>
+    </tr>
+    <tr>
+      <th>OR</th>
+      <td>26789</td>
+      <td>1.19</td>
+    </tr>
+    <tr>
+      <th>LA</th>
+      <td>25759</td>
+      <td>1.14</td>
+    </tr>
+    <tr>
+      <th>KY</th>
+      <td>21887</td>
+      <td>0.97</td>
+    </tr>
+    <tr>
+      <th>OK</th>
+      <td>20691</td>
+      <td>0.92</td>
+    </tr>
+    <tr>
+      <th>KS</th>
+      <td>19109</td>
+      <td>0.85</td>
+    </tr>
+    <tr>
+      <th>AR</th>
+      <td>17074</td>
+      <td>0.76</td>
+    </tr>
+    <tr>
+      <th>UT</th>
+      <td>14993</td>
+      <td>0.66</td>
+    </tr>
+    <tr>
+      <th>MS</th>
+      <td>12639</td>
+      <td>0.56</td>
+    </tr>
+    <tr>
+      <th>NM</th>
+      <td>11986</td>
+      <td>0.53</td>
+    </tr>
+    <tr>
+      <th>NH</th>
+      <td>11142</td>
+      <td>0.49</td>
+    </tr>
+    <tr>
+      <th>HI</th>
+      <td>10668</td>
+      <td>0.47</td>
+    </tr>
+    <tr>
+      <th>RI</th>
+      <td>10005</td>
+      <td>0.44</td>
+    </tr>
+    <tr>
+      <th>WV</th>
+      <td>8351</td>
+      <td>0.37</td>
+    </tr>
+    <tr>
+      <th>NE</th>
+      <td>7819</td>
+      <td>0.35</td>
+    </tr>
+    <tr>
+      <th>DE</th>
+      <td>6458</td>
+      <td>0.29</td>
+    </tr>
+    <tr>
+      <th>MT</th>
+      <td>6299</td>
+      <td>0.28</td>
+    </tr>
+    <tr>
+      <th>DC</th>
+      <td>5356</td>
+      <td>0.24</td>
+    </tr>
+    <tr>
+      <th>AK</th>
+      <td>5231</td>
+      <td>0.23</td>
+    </tr>
+    <tr>
+      <th>ME</th>
+      <td>4974</td>
+      <td>0.22</td>
+    </tr>
+    <tr>
+      <th>VT</th>
+      <td>4937</td>
+      <td>0.22</td>
+    </tr>
+    <tr>
+      <th>WY</th>
+      <td>4748</td>
+      <td>0.21</td>
+    </tr>
+    <tr>
+      <th>SD</th>
+      <td>4549</td>
+      <td>0.20</td>
+    </tr>
+    <tr>
+      <th>ID</th>
+      <td>4308</td>
+      <td>0.19</td>
+    </tr>
+    <tr>
+      <th>ND</th>
+      <td>3591</td>
+      <td>0.16</td>
+    </tr>
+    <tr>
+      <th>IA</th>
+      <td>14</td>
+      <td>0.00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======================================================
+  VARIABLE: VERIFICATION_STATUS
+=======================================================
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Frecuencia Absoluta</th>
+      <th>Frecuencia Relativa %</th>
+    </tr>
+    <tr>
+      <th>verification_status</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Source Verified</th>
+      <td>886231</td>
+      <td>39.20</td>
+    </tr>
+    <tr>
+      <th>Not Verified</th>
+      <td>744806</td>
+      <td>32.95</td>
+    </tr>
+    <tr>
+      <th>Verified</th>
+      <td>629631</td>
+      <td>27.85</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CATEGORÍAS CON FRECUENCIA BAJA
+
+
+purpose:
+  &#39;vacation&#39;: 0.69%
+  &#39;moving&#39;: 0.68%
+  &#39;house&#39;: 0.63%
+  &#39;wedding&#39;: 0.1%
+  &#39;renewable_energy&#39;: 0.06%
+  &#39;educational&#39;: 0.02%
+
+home_ownership:
+  &#39;ANY&#39;: 0.04%
+  &#39;OTHER&#39;: 0.01%
+  &#39;NONE&#39;: 0.0%
+
+addr_state:
+  &#39;KY&#39;: 0.97%
+  &#39;OK&#39;: 0.92%
+  &#39;KS&#39;: 0.85%
+  &#39;AR&#39;: 0.76%
+  &#39;UT&#39;: 0.66%
+  &#39;MS&#39;: 0.56%
+  &#39;NM&#39;: 0.53%
+  &#39;NH&#39;: 0.49%
+  &#39;HI&#39;: 0.47%
+  &#39;RI&#39;: 0.44%
+  &#39;WV&#39;: 0.37%
+  &#39;NE&#39;: 0.35%
+  &#39;DE&#39;: 0.29%
+  &#39;MT&#39;: 0.28%
+  &#39;DC&#39;: 0.24%
+  &#39;AK&#39;: 0.23%
+  &#39;ME&#39;: 0.22%
+  &#39;VT&#39;: 0.22%
+  &#39;WY&#39;: 0.21%
+  &#39;SD&#39;: 0.2%
+  &#39;ID&#39;: 0.19%
+  &#39;ND&#39;: 0.16%
+  &#39;IA&#39;: 0.0%
+
+verification_status: No hay categorías con frecuencia &lt; 1%
+</pre></div>
+</div>
+<img alt="../_images/e09291dc2f8083842a6497214c018150a8128b710451a10f2c72a8418d66b989.png" src="../_images/e09291dc2f8083842a6497214c018150a8128b710451a10f2c72a8418d66b989.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VALORES FALTANTES — VARIABLES CATEGÓRICAS
+
+purpose                   | Nulos:      33 |   0.0% | Sin nulos
+home_ownership            | Nulos:      33 |   0.0% | Sin nulos
+addr_state                | Nulos:      33 |   0.0% | Sin nulos
+verification_status       | Nulos:      33 |   0.0% | Sin nulos
+</pre></div>
+</div>
+</div>
 </div>
 </section>
 <section id="variable-objetivo">
@@ -669,6 +2052,21 @@ document.write(`
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======================================================
+   DISTRIBUCIÓN DE LA VARIABLE OBJETIVO — default
+=======================================================
+            Clase   Conteo  Porcentaje (%)
+Fully Paid      0  1076751           80.04
+Charged Off     1   268559           19.96
+=======================================================
+   Total de registros válidos: 1,345,310
+   Desbalance (mayoría/minoría): 4.01:1
+=======================================================
+</pre></div>
+</div>
+<img alt="../_images/76c25862c7b39bcb3c0f78ec3165156e4847cd851a6064070c4092ccb83b756f.png" src="../_images/76c25862c7b39bcb3c0f78ec3165156e4847cd851a6064070c4092ccb83b756f.png" />
 </div>
 </div>
 </section>
@@ -757,6 +2155,21 @@ document.write(`
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  DIFERENCIA DE MEDIAS, PRUEBA MANN-WHITNEY Y CORRELACIÓN PUNTO-BISERIAL 
+
+Variable                Media_0    Media_1    Δ Media      p-value Significancia     r_pb
+------------------------------------------------------------------------------------------
+loan_amnt              14134.37   15565.06    1430.69     0.00e+00 Muy alta   0.0656
+int_rate                  12.62      15.71       3.09     0.00e+00 Muy alta   0.2588
+annual_inc             77705.95   70400.74   -7305.20     0.00e+00 Muy alta  -0.0418
+dti                       17.81      20.17       2.36     0.00e+00 Muy alta   0.0845
+fico_range_high          702.26     691.85     -10.41     0.00e+00 Muy alta  -0.1307
+emp_length                 6.08       5.95      -0.13     1.98e-62 Muy alta  -0.0142
+</pre></div>
+</div>
+<img alt="../_images/0742d82bbf0afc4c0fb967064ca8fd6c61ce8f07e6668c9033f8405bc0d15074.png" src="../_images/0742d82bbf0afc4c0fb967064ca8fd6c61ce8f07e6668c9033f8405bc0d15074.png" />
 </div>
 </div>
 </section>
@@ -849,6 +2262,123 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  PRUEBA CHI-CUADRADO: VARIABLES CATEGÓRICAS vs DEFAULT 
+
+Variable                       Chi2      p-value Significancia   V Cramer
+-----------------------------------------------------------------
+purpose                     4144.20     0.00e+00 Muy Alta     0.0555
+home_ownership              6743.19     0.00e+00 Muy Alta     0.0708
+addr_state                  3403.58     0.00e+00 Muy Alta     0.0503
+verification_status        11387.44     0.00e+00 Muy Alta     0.0920
+
+ TABLAS DE CONTINGENCIA 
+
+ 
+  PURPOSE
+  Chi2=4144.20  p=0.00e+00  Muy Alta  V=0.0555
+─────────────────────────────────────────────────────────────────
+                    Fully Paid (0)  Charged Off (1)   Total  Tasa Default (%)
+purpose                                                                      
+small_business               10836             4580   15416             29.71
+renewable_energy               712              221     933             23.69
+moving                        7266             2214    9480             23.35
+house                         5666             1587    7253             21.88
+medical                      12167             3387   15554             21.78
+debt_consolidation          615307           165014  780321             21.15
+other                        61490            16385   77875             21.04
+vacation                      7327             1738    9065             19.17
+major_purchase               23952             5473   29425             18.60
+home_improvement             72002            15502   87504             17.72
+educational                    270               56     326             17.18
+credit_card                 245297            49982  295279             16.93
+car                          12444             2141   14585             14.68
+wedding                       2015              279    2294             12.16
+ 
+  HOME_OWNERSHIP
+  Chi2=6743.19  p=0.00e+00  Muy Alta  V=0.0708
+─────────────────────────────────────────────────────────────────
+                Fully Paid (0)  Charged Off (1)   Total  Tasa Default (%)
+home_ownership                                                           
+RENT                    410347           124074  534421             23.22
+OWN                     114968            29864  144832             20.62
+ANY                        230               56     286             19.58
+OTHER                      117               27     144             18.75
+MORTGAGE                551048           114531  665579             17.21
+NONE                        41                7      48             14.58
+ 
+  ADDR_STATE
+  Chi2=3403.58  p=0.00e+00  Muy Alta  V=0.0503
+─────────────────────────────────────────────────────────────────
+            Fully Paid (0)  Charged Off (1)   Total  Tasa Default (%)
+addr_state                                                           
+MS                    4870             1718    6588             26.08
+NE                    2683              903    3586             25.18
+AR                    7627             2420   10047             24.09
+AL                   12687             3926   16613             23.63
+OK                    9398             2883   12281             23.48
+LA                   11906             3593   15499             23.18
+NY                   85629            24213  109842             22.04
+NV                   15824             4443   20267             21.92
+FL                   75075            20531   95606             21.47
+TN                   16021             4364   20385             21.41
+IN                   17067             4649   21716             21.41
+NM                    5789             1573    7362             21.37
+SD                    2177              590    2767             21.32
+MD                   24573             6654   31227             21.31
+MO                   16733             4527   21260             21.29
+NJ                   38216            10233   48449             21.12
+KY                   10145             2694   12839             20.98
+PA                   36057             9465   45522             20.79
+NC                   29931             7853   37784             20.78
+OH                   34842             9000   43842             20.53
+ND                    1274              328    1602             20.47
+MI                   28083             7151   35234             20.30
+HI                    5392             1365    6757             20.20
+VA                   30454             7586   38040             19.94
+TX                   88331            21838  110169             19.82
+DE                    3036              747    3783             19.75
+MN                   19236             4732   23968             19.74
+AK                    2563              627    3190             19.66
+AZ                   26277             6418   32695             19.63
+CA                  157988            38540  196528             19.61
+MA                   25075             5902   30977             19.05
+ID                    1371              318    1689             18.83
+GA                   35398             7978   43376             18.39
+WI                   14478             3254   17732             18.35
+IL                   42360             9360   51720             18.10
+RI                    4822             1049    5871             17.87
+CT                   16300             3428   19728             17.38
+UT                    8324             1712   10036             17.06
+MT                    3178              645    3823             16.87
+WY                    2432              490    2922             16.77
+KS                    9358             1882   11240             16.74
+SC                   13389             2603   15992             16.28
+WA                   24589             4599   29188             15.76
+CO                   25064             4607   29671             15.53
+WV                    4121              757    4878             15.52
+NH                    5509              940    6449             14.58
+OR                   14046             2360   16406             14.38
+IA                       6                1       7             14.29
+VT                    2282              370    2652             13.95
+ME                    1749              281    2030             13.84
+DC                    3016              459    3475             13.21
+ 
+  VERIFICATION_STATUS
+  Chi2=11387.44  p=0.00e+00  Muy Alta  V=0.0920
+─────────────────────────────────────────────────────────────────
+                     Fully Paid (0)  Charged Off (1)   Total  Tasa Default (%)
+verification_status                                                           
+Verified                     318544            99792  418336             23.85
+Source Verified              412041           109232  521273             20.95
+Not Verified                 346166            59535  405701             14.67
+</pre></div>
+</div>
+<img alt="../_images/0098ff88a314720a3f1d52f1ad95dcd593b4983698aa4fc1b689156e98cd3191.png" src="../_images/0098ff88a314720a3f1d52f1ad95dcd593b4983698aa4fc1b689156e98cd3191.png" />
+<img alt="../_images/d758a508e276e5b069977ab2153aedb94b9b240f2fbf5e9829571ec135b7bc85.png" src="../_images/d758a508e276e5b069977ab2153aedb94b9b240f2fbf5e9829571ec135b7bc85.png" />
+<img alt="../_images/2f8716e7748c2b27885501a6db83f5acd9fb3943195e082b59bbdd5951cc196e.png" src="../_images/2f8716e7748c2b27885501a6db83f5acd9fb3943195e082b59bbdd5951cc196e.png" />
+<img alt="../_images/e181da0c3bdca406723131162ab6d3d2c073d2b48dc93d5dad3f64d0369411fe.png" src="../_images/e181da0c3bdca406723131162ab6d3d2c073d2b48dc93d5dad3f64d0369411fe.png" />
+</div>
 </div>
 </section>
 <section id="multicolinealidad">
@@ -929,6 +2459,34 @@ document.write(`
         <span class="n">v</span> <span class="o">=</span> <span class="n">v_matrix</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="mf">0.1</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">vars_cat</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2"> — </span><span class="si">{</span><span class="n">vars_cat</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="si">:</span><span class="s2">&lt;25</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">v</span><span class="si">:</span><span class="s2">&gt;8.4f</span><span class="si">}</span><span class="s2"> &quot;</span><span class="p">)</span>
+
+<span class="c1">#REDUNDANCIAS</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  MATRIZ DE CORRELACIÓN DE PEARSON — VARIABLES NUMÉRICAS 
+
+                 loan_amnt  int_rate  annual_inc     dti  fico_range_high  emp_length
+loan_amnt           1.0000    0.1417      0.3118  0.0321           0.1010      0.0904
+int_rate            0.1417    1.0000     -0.0722  0.1469          -0.4054     -0.0045
+annual_inc          0.3118   -0.0722      1.0000 -0.1405           0.0710      0.0663
+dti                 0.0321    0.1469     -0.1405  1.0000          -0.0619      0.0268
+fico_range_high     0.1010   -0.4054      0.0710 -0.0619           1.0000      0.0193
+emp_length          0.0904   -0.0045      0.0663  0.0268           0.0193      1.0000
+</pre></div>
+</div>
+<img alt="../_images/6c009dd6dd41f58bf921e6cdadef4196d0c4eee480851ea4e446d6cbb2378829.png" src="../_images/6c009dd6dd41f58bf921e6cdadef4196d0c4eee480851ea4e446d6cbb2378829.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  MATRIZ V DE CRAMER — VARIABLES CATEGÓRICAS 
+
+                     purpose  home_ownership  addr_state  verification_status
+purpose               1.0000          0.0861      0.0214               0.0618
+home_ownership        0.0861          1.0000      0.1113               0.0288
+addr_state            0.0214          0.1113      1.0000               0.0214
+verification_status   0.0618          0.0288      0.0214               1.0000
+
+  PARES CON ASOCIACIÓN NOTABLE (V &gt; 0.1):
+  home_ownership — addr_state                  0.1113 
 </pre></div>
 </div>
 </div>
@@ -986,8 +2544,12 @@ document.write(`
              <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.01</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/64816e5ab6abdbfc918172d55945965b88dd2072ab9cf33b706531674df4e882.png" src="../_images/64816e5ab6abdbfc918172d55945965b88dd2072ab9cf33b706531674df4e882.png" />
 </div>
 </div>
 </section>
@@ -1060,6 +2622,44 @@ document.write(`
               <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pval</span><span class="si">:</span><span class="s2">&gt;10.2e</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">sig</span><span class="si">:</span><span class="s2">&gt;6</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">var</span><span class="si">:</span><span class="s2">&lt;22</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;—&#39;</span><span class="si">:</span><span class="s2">&gt;16</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;—&#39;</span><span class="si">:</span><span class="s2">&gt;16</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;solo 1 clase&#39;</span><span class="si">:</span><span class="s2">&gt;10</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1">#Plan de tratamiento</span>
+
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  VALORES FALTANTES POR VARIABLE 
+
+                        Tipo  Nulos  Porcentaje
+emp_length           float64  78511      5.8359
+dti                  float64    374      0.0278
+loan_amnt            float64      0      0.0000
+annual_inc           float64      0      0.0000
+int_rate             float64      0      0.0000
+fico_range_high      float64      0      0.0000
+purpose               object      0      0.0000
+home_ownership        object      0      0.0000
+addr_state            object      0      0.0000
+verification_status   object      0      0.0000
+default                int64      0      0.0000
+</pre></div>
+</div>
+<img alt="../_images/7ced486f23888ed762288102bf09f91a71ed18aedd0427c81ced563d9dbed1f4.png" src="../_images/7ced486f23888ed762288102bf09f91a71ed18aedd0427c81ced563d9dbed1f4.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  PRUEBA MCAR 
+
+Variable                % null_default0  % null_default1    p-value Significancia
+-----------------------------------------------------------------
+loan_amnt                             —                —          —  Sin nulos
+int_rate                              —                —          —  Sin nulos
+annual_inc                            —                —          —  Sin nulos
+dti                               0.03%            0.03%   6.83e-01     NS
+fico_range_high                       —                —          —  Sin nulos
+emp_length                        5.33%            7.87%   0.00e+00 Muy Alta
+purpose                               —                —          —  Sin nulos
+home_ownership                        —                —          —  Sin nulos
+addr_state                            —                —          —  Sin nulos
+verification_status                   —                —          —  Sin nulos
 </pre></div>
 </div>
 </div>

@@ -66,7 +66,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Interpretabilidad con LIME" href="05_lime.html" />
-    <link rel="prev" title="Modelado" href="03_modelado.html" />
+    <link rel="prev" title="Modelado - scikit-learn" href="03_modelado.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -173,7 +173,8 @@ const thebe_selector_output = ".output, .cell_output"
 
 <li class="toctree-l1"><a class="reference internal" href="02_preprocesamiento.html">Preprocesamiento con scikit-learn</a></li>
 
-<li class="toctree-l1"><a class="reference internal" href="03_modelado.html">3 · Modelado y Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_modelado.html">Modelado - scikit-learn</a></li>
+
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">4 · Evaluación de Métricas</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05_lime.html">5 · Interpretabilidad (LIME)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="06_reflexion.html">6 · Reflexión Crítica</a></li>
@@ -346,10 +347,7 @@ document.write(`
 <h1>Evaluación de métricas<a class="headerlink" href="#evaluacion-de-metricas" title="Permalink to this heading">#</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># ============================================================</span>
-<span class="c1"># 9.10.4.6  COMPARACIÓN DE RESULTADOS sklearn vs PySpark</span>
-<span class="c1"># ============================================================</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">roc_curve</span><span class="p">,</span> <span class="n">auc</span> <span class="k">as</span> <span class="n">sk_auc</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">roc_curve</span><span class="p">,</span> <span class="n">auc</span> <span class="k">as</span> <span class="n">sk_auc</span>
 
 <span class="c1"># ── Métricas sklearn (calculadas previamente) ────────────────────────────────</span>
 <span class="n">sk_metrics</span> <span class="o">=</span> <span class="p">{</span>
@@ -454,6 +452,25 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>══════════════════════════════════════════════════════
+       TABLA COMPARATIVA — sklearn vs PySpark
+══════════════════════════════════════════════════════
+           scikit-learn  PySpark
+ROC AUC          0.6975   0.6975
+Accuracy         0.7998   0.7998
+Precision        0.7333   0.7333
+Recall           0.0002   0.0002
+F1-score         0.0004   0.0004
+
+  Tiempos (segundos):
+                    scikit-learn  PySpark
+Entrenamiento (CV)       1241.38  2976.65
+Predicción                  6.53    12.19
+</pre></div>
+</div>
+<img alt="../_images/21293c4e77c82f9b6d340b8d2b649ec2a91f29cf33101a276aa0692c68f0dd58.png" src="../_images/21293c4e77c82f9b6d340b8d2b649ec2a91f29cf33101a276aa0692c68f0dd58.png" />
+</div>
 </div>
 </section>
 
@@ -493,7 +510,7 @@ document.write(`
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Modelado</p>
+        <p class="prev-next-title">Modelado - scikit-learn</p>
       </div>
     </a>
     <a class="right-next"

@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Modelado &#8212; Tarea 9.10 - Lending Club Dataset</title>
+    <title>Modelado - scikit-learn &#8212; Tarea 9.10 - Lending Club Dataset</title>
   
   
   
@@ -173,7 +173,8 @@ const thebe_selector_output = ".output, .cell_output"
 
 <li class="toctree-l1"><a class="reference internal" href="02_preprocesamiento.html">Preprocesamiento con scikit-learn</a></li>
 
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">3 · Modelado y Tuning</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Modelado - scikit-learn</a></li>
+
 <li class="toctree-l1"><a class="reference internal" href="04_evaluacion.html">4 · Evaluación de Métricas</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05_lime.html">5 · Interpretabilidad (LIME)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="06_reflexion.html">6 · Reflexión Crítica</a></li>
@@ -317,7 +318,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
 </div></div>
       
     </div>
@@ -328,11 +331,21 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Modelado</h1>
+    <h1>Modelado - scikit-learn</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Modelado - scikit-learn</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#modelado-pyspark">Modelado - PySpark</a></li>
+</ul>
+
+            </nav>
         </div>
     </div>
 </div>
@@ -342,8 +355,80 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="modelado">
-<h1>Modelado<a class="headerlink" href="#modelado" title="Permalink to this heading">#</a></h1>
+  <section id="modelado-scikit-learn">
+<h1>Modelado - scikit-learn<a class="headerlink" href="#modelado-scikit-learn" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">GridSearchCV</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">accuracy_score</span><span class="p">,</span> <span class="n">precision_score</span><span class="p">,</span> <span class="n">recall_score</span><span class="p">,</span> <span class="n">f1_score</span><span class="p">,</span> <span class="n">roc_auc_score</span><span class="p">,</span> <span class="n">confusion_matrix</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">roc_auc_score</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">param_grid</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;n_estimators&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span> <span class="s1">&#39;max_depth&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">]}</span>
+<span class="n">random_forest</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="c1"># Entrenamiento con GridSearchCV</span>
+<span class="n">start_train</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">grid</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">random_forest</span><span class="p">,</span> <span class="n">param_grid</span><span class="o">=</span><span class="n">param_grid</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;roc_auc&#39;</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">grid</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_proc</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">elapsed_train</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_train</span>
+
+<span class="c1"># Predicción</span>
+<span class="n">start_pred</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test_proc</span><span class="p">)</span>
+<span class="n">y_prob</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test_proc</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">elapsed_pred</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_pred</span>
+
+<span class="c1"># Métricas</span>
+<span class="n">accuracy</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+<span class="n">precision</span> <span class="o">=</span> <span class="n">precision_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+<span class="n">recall</span> <span class="o">=</span> <span class="n">recall_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+<span class="n">f1</span> <span class="o">=</span> <span class="n">f1_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+<span class="n">auc</span> <span class="o">=</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_prob</span><span class="p">)</span>
+<span class="n">cm</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">GridSearchCV (scikit-learn) — RandomForestClassifier&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Mejores parámetros:&quot;</span><span class="p">,</span> <span class="n">grid</span><span class="o">.</span><span class="n">best_params_</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Accuracy:  </span><span class="si">{</span><span class="n">accuracy</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Precision: </span><span class="si">{</span><span class="n">precision</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Recall:    </span><span class="si">{</span><span class="n">recall</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;F1-score:  </span><span class="si">{</span><span class="n">f1</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ROC AUC:   </span><span class="si">{</span><span class="n">auc</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Matriz de confusión:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cm</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Tiempo de entrenamiento: </span><span class="si">{</span><span class="n">elapsed_train</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> segundos&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Tiempo de predicción:    </span><span class="si">{</span><span class="n">elapsed_pred</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> segundos&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>GridSearchCV (scikit-learn) — RandomForestClassifier
+Mejores parámetros: {&#39;max_depth&#39;: 15, &#39;n_estimators&#39;: 100}
+Accuracy:  0.8008
+Precision: 0.6782
+Recall:    0.0036
+F1-score:  0.0073
+ROC AUC:   0.7036
+
+Matriz de confusión:
+[[215257     93]
+ [ 53516    196]]
+
+Tiempo de entrenamiento: 1241.38 segundos
+Tiempo de predicción:    6.5252 segundos
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="modelado-pyspark">
+<h1>Modelado - PySpark<a class="headerlink" href="#modelado-pyspark" title="Permalink to this heading">#</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># ── 15. Modelo RandomForest ──────────────────────────────────────────────────</span>
@@ -435,6 +520,31 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+-----+----------+------+
+|label|prediction| count|
++-----+----------+------+
+|  0.0|       0.0|214885|
+|  0.0|       1.0|     4|
+|  1.0|       0.0| 53794|
+|  1.0|       1.0|    11|
++-----+----------+------+
+
+══════════════════════════════════════════════════
+  CrossValidator (PySpark) — RandomForestClassifier
+══════════════════════════════════════════════════
+  Mejores parámetros : {&#39;numTrees&#39;: 50, &#39;maxDepth&#39;: 15}
+  ROC AUC            : 0.6975
+  Accuracy           : 0.7998
+  Precision          : 0.7333
+  Recall             : 0.0002
+  F1-score           : 0.0004
+  Tiempo entrenamiento (CV) : 2976.65 s
+  Tiempo predicción         : 12.1876 s
+══════════════════════════════════════════════════
+</pre></div>
+</div>
+</div>
 </div>
 </section>
 
@@ -492,6 +602,23 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Modelado - scikit-learn</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#modelado-pyspark">Modelado - PySpark</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
               
             
           </div>

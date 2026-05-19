@@ -65,7 +65,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/02_preprocesamiento';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Modelado" href="03_modelado.html" />
+    <link rel="next" title="Modelado - scikit-learn" href="03_modelado.html" />
     <link rel="prev" title="EDA" href="01_eda.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -173,7 +173,8 @@ const thebe_selector_output = ".output, .cell_output"
 
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Preprocesamiento con scikit-learn</a></li>
 
-<li class="toctree-l1"><a class="reference internal" href="03_modelado.html">3 · Modelado y Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_modelado.html">Modelado - scikit-learn</a></li>
+
 <li class="toctree-l1"><a class="reference internal" href="04_evaluacion.html">4 · Evaluación de Métricas</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05_lime.html">5 · Interpretabilidad (LIME)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="06_reflexion.html">6 · Reflexión Crítica</a></li>
@@ -440,54 +441,30 @@ document.write(`
 </pre></div>
 </div>
 </div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">GridSearchCV</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">RandomForestClassifier</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">accuracy_score</span><span class="p">,</span> <span class="n">precision_score</span><span class="p">,</span> <span class="n">recall_score</span><span class="p">,</span> <span class="n">f1_score</span><span class="p">,</span> <span class="n">roc_auc_score</span><span class="p">,</span> <span class="n">confusion_matrix</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">roc_auc_score</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">param_grid</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;n_estimators&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span> <span class="s1">&#39;max_depth&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">]}</span>
-<span class="n">random_forest</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  DIVISIÓN TRAIN_TEST_SPLIT 
 
-<span class="c1"># Entrenamiento con GridSearchCV</span>
-<span class="n">start_train</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-<span class="n">grid</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">random_forest</span><span class="p">,</span> <span class="n">param_grid</span><span class="o">=</span><span class="n">param_grid</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;roc_auc&#39;</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">grid</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_proc</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
-<span class="n">elapsed_train</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_train</span>
+  Train :  1,076,248 filas  (80.0%)
+  Test  :    269,062 filas  (20.0%)
 
-<span class="c1"># Predicción</span>
-<span class="n">start_pred</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-<span class="n">y_pred</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test_proc</span><span class="p">)</span>
-<span class="n">y_prob</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test_proc</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">]</span>
-<span class="n">elapsed_pred</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_pred</span>
+  Distribución target en train:
+default
+0    80.04
+1    19.96
 
-<span class="c1"># Métricas</span>
-<span class="n">accuracy</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
-<span class="n">precision</span> <span class="o">=</span> <span class="n">precision_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
-<span class="n">recall</span> <span class="o">=</span> <span class="n">recall_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
-<span class="n">f1</span> <span class="o">=</span> <span class="n">f1_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
-<span class="n">auc</span> <span class="o">=</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_prob</span><span class="p">)</span>
-<span class="n">cm</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+  Distribución target en test:
+default
+0    80.04
+1    19.96
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">GridSearchCV (scikit-learn) — RandomForestClassifier&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Mejores parámetros:&quot;</span><span class="p">,</span> <span class="n">grid</span><span class="o">.</span><span class="n">best_params_</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Accuracy:  </span><span class="si">{</span><span class="n">accuracy</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Precision: </span><span class="si">{</span><span class="n">precision</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Recall:    </span><span class="si">{</span><span class="n">recall</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;F1-score:  </span><span class="si">{</span><span class="n">f1</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ROC AUC:   </span><span class="si">{</span><span class="n">auc</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Matriz de confusión:&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">cm</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Tiempo de entrenamiento: </span><span class="si">{</span><span class="n">elapsed_train</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> segundos&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Tiempo de predicción:    </span><span class="si">{</span><span class="n">elapsed_pred</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> segundos&quot;</span><span class="p">)</span>
+ PREPROCESAMIENTO
+============================================================
+  Shape X_train original  : (1076248, 10)
+  Shape X_train procesado : (1076248, 76)
+  Shape X_test  procesado : (269062, 76)
+
+  Nulos en X_train procesado : 0
+  Nulos en X_test  procesado : 0
 </pre></div>
 </div>
 </div>
@@ -683,7 +660,7 @@ document.write(`
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Modelado</p>
+        <p class="prev-next-title">Modelado - scikit-learn</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
