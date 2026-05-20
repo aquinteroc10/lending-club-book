@@ -348,9 +348,10 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#relacion-categorica-default">1.2.2. Relación categórica ↔ default</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multicolinealidad">1.2.3. Multicolinealidad</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kde">1.2.4. KDE</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#valores-faltantes">1.2.5. Valores faltantes</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#valores-faltantes">1.3. Valores faltantes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis">1.4. Análisis</a></li>
 </ul>
             </nav>
         </div>
@@ -2546,8 +2547,9 @@ verification_status   0.0618          0.0288      0.0214               1.0000
 </div>
 </div>
 </section>
+</section>
 <section id="valores-faltantes">
-<h3><span class="section-number">1.2.5. </span>Valores faltantes<a class="headerlink" href="#valores-faltantes" title="Permalink to this heading">#</a></h3>
+<h2><span class="section-number">1.3. </span>Valores faltantes<a class="headerlink" href="#valores-faltantes" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">missingno</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">msno</span>
@@ -2658,6 +2660,9 @@ verification_status                   —                —          —  Sin n
 </div>
 </div>
 </section>
+<section id="analisis">
+<h2><span class="section-number">1.4. </span>Análisis<a class="headerlink" href="#analisis" title="Permalink to this heading">#</a></h2>
+<p>El dataset de LendingClub (2007–2018) presenta una calidad de datos aceptable para modelado, aunque con varios aspectos que requieren atención. En cuanto a valores faltantes, <strong>emp_length</strong> es la única variable numérica con nulos significativos (tratables por imputación con mediana), mientras que las variables categóricas no presentan ausencias relevantes. La variable objetivo muestra un desbalance de aproximadamente 4:1 entre Fully Paid y Charged Off, lo que representa el problema más crítico del dataset y anticipa la necesidad de estrategias de balanceo de clases (como class_weight=’balanced’ o submuestreo) para evitar que el modelo se sesgue hacia la clase mayoritaria. En términos de poder predictivo, las variables más prometedoras son <em>int_rate</em> y <em>fico_range_high</em>, que exhiben las diferencias de medias más pronunciadas entre clases, significancia estadística muy alta y las correlaciones punto-biseriales más elevadas; <em>dti</em> y <em>loan_amnt</em> también muestran señal discriminativa aunque más moderada. Entre las variables categóricas, <em>purpose</em> y <em>verification_status</em> presentan asociaciones significativas con el default según la prueba Chi-cuadrado. Se detectaron outliers severos en <em>annual_inc</em> y <em>dti</em>, que requerirán transformación logarítmica o winsorización antes del modelado. La matriz de correlaciones de Pearson no reveló multicolinealidad crítica entre las numéricas, por lo que se conservarán todas las variables seleccionadas. Las decisiones preliminares para el preprocesamiento son: imputar <em>emp_length</em> con mediana, aplicar StandardScaler a todas las numéricas y codificar las categóricas con OneHotEncoder.</p>
 </section>
 </section>
 
@@ -2736,9 +2741,10 @@ verification_status                   —                —          —  Sin n
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#relacion-categorica-default">1.2.2. Relación categórica ↔ default</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multicolinealidad">1.2.3. Multicolinealidad</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kde">1.2.4. KDE</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#valores-faltantes">1.2.5. Valores faltantes</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#valores-faltantes">1.3. Valores faltantes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis">1.4. Análisis</a></li>
 </ul>
   </nav></div>
 
